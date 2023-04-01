@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:EventsExample.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:views="clr-namespace:EventsExample.Views"
+		xmlns:models="clr-namespace:EventsExample.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="EventsExample.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="EventsExample">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<ItemsControl DragDrop.AllowDrop="True" 
+				  Items="{Binding Shapes}"
+				  PointerPressed="OnPointerPressed">
+		<ItemsControl.ItemsPanel>
+			<ItemsPanelTemplate>
+				<Canvas Name="highLevelCanvas"/>
+			</ItemsPanelTemplate>
+		</ItemsControl.ItemsPanel>
+
+		<ItemsControl.DataTemplates>
+			<DataTemplate DataType="{x:Type	models:RectangleWithConnectors}">
+				<views:ControlWithConnectors>
+					<views:ControlWithConnectors.RenderTransform>
+						<TranslateTransform X="{Binding StartPoint.X}"
+											Y="{Binding StartPoint.Y}"/>
+					</views:ControlWithConnectors.RenderTransform>
+				</views:ControlWithConnectors>
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type	models:Connector}">
+				<Line StartPoint="{Binding StartPoint}"
+					  EndPoint="{Binding EndPoint}"
+					  Stroke="LawnGreen"
+					  StrokeThickness="2"/>
+			</DataTemplate>
+		</ItemsControl.DataTemplates>
+	</ItemsControl>
+
+
+</Window>
